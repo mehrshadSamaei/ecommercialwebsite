@@ -1,5 +1,7 @@
 package com.example.ecommercialwithservlet;
 
+import com.example.ecommercialwithservlet.dao.EntityManagerFactorySingleton;
+import com.example.ecommercialwithservlet.dao.UserDAO;
 import com.example.ecommercialwithservlet.entity.UsersEntity;
 
 import javax.persistence.EntityManager;
@@ -9,9 +11,9 @@ import java.lang.reflect.Field;
 
 public class UserTest {
     public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bookStoreWebsite");
-        EntityManager em = emf.createEntityManager();
-//        User user = new User();
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bookStoreWebsite");
+        EntityManager em = EntityManagerFactorySingleton.getEmf().createEntityManager();
+//        UsersEntity user = new UsersEntity();
 //        user.setEmail("test1@gmail.com");
 //        user.setFullName("test testiiii");
 //        user.setPassword("test123456");
@@ -28,11 +30,12 @@ public class UserTest {
         password.set(user, "123456789");
 
 
-        em.getTransaction().begin();
-        em.persist(user);
-        em.getTransaction().commit();
-        em.close();
-        emf.close();
+        UserDAO userDAO = new UserDAO(em);
+//        em.getTransaction().begin();
+//        em.persist(user);
+//        em.getTransaction().commit();
+//        em.close();
+        userDAO.create(user);
 
 
         System.out.println(" a user obj persist");
